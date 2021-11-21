@@ -1,18 +1,32 @@
 package com.vandai.mobi.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vandai.mobi.model.ERole;
+import com.vandai.mobi.model.Role;
+import com.vandai.mobi.services.RoleService;
+
 @RestController
 @RequestMapping("api/test")
 @CrossOrigin(origins = "*")
 public class TestController {
+	@Autowired
+	RoleService roleService;
 	@GetMapping("/all")
 	public String allAccess() {
-		return "Mọi đối tượng";
+		Role role = new Role();
+		Role role2 = new Role();
+		Role role3 = new Role();
+		role.setName(ERole.ROLE_ADMIN);
+		role.setName(ERole.ROLE_SUPPORT);
+		role.setName(ERole.ROLE_USER);
+		roleService.addRole(role);roleService.addRole(role2);roleService.addRole(role3);
+		return "Thêm role thành công";
 	}
 	
 	@GetMapping("/user")
