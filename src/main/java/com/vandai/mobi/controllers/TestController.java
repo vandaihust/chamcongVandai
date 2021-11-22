@@ -22,10 +22,10 @@ public class TestController {
 		Role role = new Role();
 		Role role2 = new Role();
 		Role role3 = new Role();
-		role.setName(ERole.ROLE_ADMIN);
-		role.setName(ERole.ROLE_SUPPORT);
-		role.setName(ERole.ROLE_USER);
-		roleService.addRole(role);roleService.addRole(role2);roleService.addRole(role3);
+		role.setName(ERole.ROLE_ADMIN);roleService.addRole(role);
+		role2.setName(ERole.ROLE_SUPPORT);roleService.addRole(role2);
+		role3.setName(ERole.ROLE_USER);
+		roleService.addRole(role3);
 		return "Thêm role thành công";
 	}
 	

@@ -37,13 +37,9 @@ public class DepartmentService implements DepartmentServiceImpl{
 
 	@Override
 	public boolean updateDepartment(Department department, Long id) {
-		
-		Department departmentOld = departmentRepository.getById(id);
-		if(department.getId()==departmentOld.getId()) {
-			departmentRepository.save(department);			
-			return true;
-		}
-		else return false;
+		department.setId(id);
+		departmentRepository.save(department);
+		return true;
 	}
 
 	@Override

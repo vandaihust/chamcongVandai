@@ -11,13 +11,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
-import lombok.Data;
 
 @Entity
 @Table(name = "employee")
-@Data
+@Getter
+@Setter
 public class Employee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,11 +46,9 @@ public class Employee {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	private User user;
-
-	@ManyToOne(targetEntity = Department.class)
-	@JsonIgnore
-	@JoinColumn(name = "department_id")//not null
-	private Department department;
 	
+	@ManyToOne
+	@JoinColumn(name = "department_id")
+	private Department department;
 	
 }

@@ -3,7 +3,6 @@ package com.vandai.mobi.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,12 +18,14 @@ import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
 //để username là duy nhất uniqueConstraints
-@Data
+@Getter
+@Setter
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,5 +42,6 @@ public class User {
 	private Set<Role> roles = new HashSet<>();
 	
 	@OneToOne(mappedBy = "user")
+	@JsonIgnore
 	private Employee employee;
 }

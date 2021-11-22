@@ -14,7 +14,7 @@ public interface EmployeeServiceImpl {
 	public boolean deleteEmployeeById(long id);
 	public Page<Employee> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
 	public Employee addEmployee(EmployeeDto employeeDto);
-	public Optional<Employee> getEmployeeById(long id);      
+	public Employee getEmployeeById(long id);      
 	public boolean deleteEmployee(long id);    
 	public boolean deleteEmployeeSelected(List<Long> id); 
 	public boolean deleteAllEmployee(); 
