@@ -1,9 +1,6 @@
 package com.vandai.mobi.services;
 
-
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,9 +12,11 @@ import org.springframework.stereotype.Service;
 import com.vandai.mobi.dto.EmployeeDto;
 import com.vandai.mobi.model.Department;
 import com.vandai.mobi.model.Employee;
+import com.vandai.mobi.model.Position;
 import com.vandai.mobi.model.User;
 import com.vandai.mobi.reponsitory.DepartmentRepository;
 import com.vandai.mobi.reponsitory.EmployeeRepository;
+import com.vandai.mobi.reponsitory.PositionRepository;
 import com.vandai.mobi.reponsitory.UserRepository;
 import com.vandai.mobi.services.impl.EmployeeServiceImpl;
 @Service
@@ -29,7 +28,7 @@ public class EmployeeService implements EmployeeServiceImpl{
 	@Autowired
 	UserRepository userRepository; 
 	@Autowired
-	DepartmentService departmentService;
+	PositionRepository positionRepository;
 	@Override
 	public List<Employee> getAllEmployees() {
 		List<Employee> listEmployee = employeeRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
@@ -43,9 +42,10 @@ public class EmployeeService implements EmployeeServiceImpl{
 	}
 
 	@Override
-	public Page<Employee> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
-		Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
-			Sort.by(sortField).descending();
+	public Page<Employee> findPaginated(int pageNo, int pageSize, String sortField) {
+		
+		Sort sort = Sort.by(sortField).ascending() ;
+			
 		//
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
 		return employeeRepository.findAll(pageable);
@@ -58,6 +58,7 @@ public class EmployeeService implements EmployeeServiceImpl{
 		Employee employee = new Employee();
 		User user = userRepository.findById(employeeDto.getIdUser()).get();
 		Department department = departmentRepository.findById(employeeDto.getIdDepartment()).get();
+		Position position = positionRepository.findById(employeeDto.getIdPosition()).get();
 		employee.setIdEmployee(employeeDto.getIdEmployee());
 		employee.setName(employeeDto.getName());
 		employee.setSex(employeeDto.isSex());
@@ -69,8 +70,11 @@ public class EmployeeService implements EmployeeServiceImpl{
 		employee.setAvatar(employeeDto.getAvatar());
 		employee.setAcademicLevel(employeeDto.getAcademicLevel());		
 		employee.setUser(user);	
-		employee.setDepartment(department);
+		employee.setDepartment(department);		
+		employee.setPosition(position);
 		
+		position.addEmployee(employee);
+		positionRepository.save(position);
 		department.addEmployee(employee);
 		departmentRepository.save(department);	//CascadeType.ALL nên ko cần save E
 		return employee;
@@ -124,11 +128,12 @@ public class EmployeeService implements EmployeeServiceImpl{
 	}
 
 
-//	@Override
-//	public List<Employee> getEmployeeByDepartment(Department department) {
-//		List<Employee> listEmployee = employeeRepository.findByDepartment(department);
-//		return listEmployee;
-//	}
+	@Override
+	public List<Employee> getEmployeeByDepartment(Long idDepartment) {
+		Department department = departmentRepository.findById(idDepartment).get();
+		List<Employee> listEmployee = employeeRepository.findByDepartment(department);
+		return listEmployee;
+	}
 
 
 }

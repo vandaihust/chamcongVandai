@@ -8,13 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vandai.mobi.model.Department;
+import com.vandai.mobi.model.Employee;
 import com.vandai.mobi.reponsitory.DepartmentRepository;
+import com.vandai.mobi.reponsitory.EmployeeRepository;
 import com.vandai.mobi.services.impl.DepartmentServiceImpl;
 
 @Service
 public class DepartmentService implements DepartmentServiceImpl{
 	@Autowired
 	DepartmentRepository departmentRepository;
+	@Autowired
+	EmployeeRepository employeeRepository;
 	@Override
 	public Department addDepartment(Department department) {	
 		departmentRepository.save(department);
@@ -23,7 +27,7 @@ public class DepartmentService implements DepartmentServiceImpl{
 
 	@Override
 	public List<Department> getAllDepartment() {
-		
+
 		List<Department> listDepartment = departmentRepository.findAll();
 		return listDepartment;
 	}
@@ -31,6 +35,12 @@ public class DepartmentService implements DepartmentServiceImpl{
 
 	@Override
 	public boolean deleteDepartment(Long id) {
+		if(departmentRepository.findById(id).get().getIdDepartment().equals("PBT")) return true;
+		List<Employee> list = employeeRepository.findByDepartment(departmentRepository.findById(id).get());
+		for (Employee employee : list) {
+			employee.setDepartment(departmentRepository.findByIdDepartment("PBT"));
+			employeeRepository.save(employee);
+		}
 		departmentRepository.deleteById(id);
 		return true;
 	}
@@ -83,5 +93,5 @@ public class DepartmentService implements DepartmentServiceImpl{
 		}
 		return list;
 	}
-	
+
 }

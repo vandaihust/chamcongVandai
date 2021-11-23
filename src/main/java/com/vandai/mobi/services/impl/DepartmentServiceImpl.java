@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.vandai.mobi.model.Department;
-import com.vandai.mobi.model.Employee;
 
 public interface DepartmentServiceImpl {
 	public Department addDepartment(Department department);

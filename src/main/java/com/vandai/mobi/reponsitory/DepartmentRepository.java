@@ -9,4 +9,5 @@ import com.vandai.mobi.model.Department;
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long>{
 	public List<Department> findByNameIsContaining(String name);
+	public Department findByIdDepartment(String idDepartment);
 }

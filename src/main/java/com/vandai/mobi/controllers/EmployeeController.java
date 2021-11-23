@@ -3,6 +3,7 @@ package com.vandai.mobi.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,11 +45,24 @@ public class EmployeeController {
 		Employee employee = employeeService.getEmployeeById(id);		
 		return new ResponseEntity<Employee>(employee, HttpStatus.OK);
 	}
+	@GetMapping("/department/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> getEmployeeByDeparment(@PathVariable Long id){
+		List<Employee> employees = employeeService.getEmployeeByDepartment(id);		
+		return new ResponseEntity<List<Employee>>(employees, HttpStatus.OK);
+	}
 	@GetMapping("search/{name}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> searchEmployeeByName(@PathVariable String name){
 		List<Employee> listEmployees = employeeService.getEmployeeByName(name);
 		return new ResponseEntity<List<Employee>>(listEmployees, HttpStatus.OK);
+	}
+	@GetMapping("{pageNo}/{pageSize}/{sortField}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> findPaginated(@PathVariable int pageNo,@PathVariable int pageSize,
+			@PathVariable String sortField){
+		Page<Employee> listEmployees = employeeService.findPaginated(pageNo, pageSize, sortField);
+		return new ResponseEntity<Page<Employee>>(listEmployees, HttpStatus.OK);
 	}
 	@PostMapping
 	@PreAuthorize("hasRole('ADMIN')")
