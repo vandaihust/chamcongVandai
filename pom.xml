@@ -12,6 +12,7 @@
 	<groupId>com.vandai.mobi</groupId>
 	<artifactId>ChamCong</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>ChamCong</name>
 	<description>cham cong</description>
 	<properties>
