@@ -72,8 +72,8 @@ public class EmployeeController {
 	}
 	@PutMapping("{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<?> updateEmployee(@RequestBody Employee employee,@PathVariable Long id){
-		return new ResponseEntity<>(employeeService.updateEmployee(employee, id)
+	public ResponseEntity<?> updateEmployee(@RequestBody EmployeeDto employeeDt0,@PathVariable Long id){
+		return new ResponseEntity<>(employeeService.updateEmployee(employeeDt0, id)
 				, HttpStatus.OK);
 	}
 	@DeleteMapping("{id}")

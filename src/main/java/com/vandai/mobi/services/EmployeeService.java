@@ -13,10 +13,12 @@ import com.vandai.mobi.dto.EmployeeDto;
 import com.vandai.mobi.model.Department;
 import com.vandai.mobi.model.Employee;
 import com.vandai.mobi.model.Position;
+import com.vandai.mobi.model.Salary;
 import com.vandai.mobi.model.User;
 import com.vandai.mobi.reponsitory.DepartmentRepository;
 import com.vandai.mobi.reponsitory.EmployeeRepository;
 import com.vandai.mobi.reponsitory.PositionRepository;
+import com.vandai.mobi.reponsitory.SalaryRepository;
 import com.vandai.mobi.reponsitory.UserRepository;
 import com.vandai.mobi.services.impl.EmployeeServiceImpl;
 @Service
@@ -29,6 +31,8 @@ public class EmployeeService implements EmployeeServiceImpl{
 	UserRepository userRepository; 
 	@Autowired
 	PositionRepository positionRepository;
+	@Autowired
+	SalaryRepository salaryRepository;
 	@Override
 	public List<Employee> getAllEmployees() {
 		List<Employee> listEmployee = employeeRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
@@ -59,6 +63,7 @@ public class EmployeeService implements EmployeeServiceImpl{
 		User user = userRepository.findById(employeeDto.getIdUser()).get();
 		Department department = departmentRepository.findById(employeeDto.getIdDepartment()).get();
 		Position position = positionRepository.findById(employeeDto.getIdPosition()).get();
+		Salary salary = salaryRepository.findById(employeeDto.getCoefficientsSalary()).get();
 		employee.setIdEmployee(employeeDto.getIdEmployee());
 		employee.setName(employeeDto.getName());
 		employee.setSex(employeeDto.isSex());
@@ -72,7 +77,10 @@ public class EmployeeService implements EmployeeServiceImpl{
 		employee.setUser(user);	
 		employee.setDepartment(department);		
 		employee.setPosition(position);
+		employee.setSalary(salary);
 		
+		salary.addEmployee(employee);
+		salaryRepository.save(salary);
 		position.addEmployee(employee);
 		positionRepository.save(position);
 		department.addEmployee(employee);
@@ -111,10 +119,34 @@ public class EmployeeService implements EmployeeServiceImpl{
 	}
 
 	@Override
-	public boolean updateEmployee(Employee employee, long id) {
+	public String updateEmployee(EmployeeDto employeeDto, long id) {
+		Employee employee = new Employee();
+		User user = userRepository.findById(employeeDto.getIdUser()).get();
+		Department department = departmentRepository.findById(employeeDto.getIdDepartment()).get();
+		Position position = positionRepository.findById(employeeDto.getIdPosition()).get();
+		Salary salary = salaryRepository.findById(employeeDto.getCoefficientsSalary()).get();
+		
 		employee.setId(id);
+		employee.setIdEmployee(employeeDto.getIdEmployee());
+		employee.setName(employeeDto.getName());
+		employee.setSex(employeeDto.isSex());
+		employee.setBirthDate(employeeDto.getBirthDate());
+		employee.setIdCardNumber(employeeDto.getIdCardNumber());
+		employee.setPhone(employeeDto.getPhone());
+		employee.setEmail(employeeDto.getEmail());
+		employee.setMaritalStatus(employeeDto.getMaritalStatus());
+		employee.setAvatar(employeeDto.getAvatar());
+		employee.setAcademicLevel(employeeDto.getAcademicLevel());		
+		employee.setUser(user);	
+		employee.setDepartment(department);		
+		employee.setPosition(position);
+		employee.setSalary(salary);
 		employeeRepository.save(employee);
-		return true;
+
+		if(employeeRepository.save(employee) != null) {
+			return "Update Success";
+		}
+		return "Update fail";
 	
 	}
 

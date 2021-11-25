@@ -16,7 +16,7 @@ public interface EmployeeServiceImpl {
 	public boolean deleteEmployee(long id);    
 	public boolean deleteEmployeeSelected(List<Long> id); 
 	public boolean deleteAllEmployee(); 
-	public boolean updateEmployee(Employee employee, long id); 
+	public String updateEmployee(EmployeeDto employee, long id); 
 	public List<Employee> getEmployeeByName(String name);
 	public List<Employee> getEmployeeByDepartment(Long idDepartment);
 	

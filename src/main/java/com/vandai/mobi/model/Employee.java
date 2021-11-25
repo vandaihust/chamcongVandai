@@ -55,4 +55,8 @@ public class Employee {
 	@JoinColumn(name = "position_id")
 	private Position position;
 	
+	@ManyToOne
+	@JoinColumn(name = "coefficients_salary_id")
+	private Salary salary;
+	
 }

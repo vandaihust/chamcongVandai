@@ -17,4 +17,5 @@ public class EmployeeDto {
 	private Long idUser;
 	private Long idDepartment;
 	private int idPosition;
+	private int coefficientsSalary;
 }
