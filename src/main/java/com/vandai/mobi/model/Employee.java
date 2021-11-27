@@ -1,15 +1,23 @@
 package com.vandai.mobi.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -59,4 +67,10 @@ public class Employee {
 	@JoinColumn(name = "coefficients_salary_id")
 	private Salary salary;
 	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JsonIgnore
+	@JoinTable(	name = "employee_timekeeping", 
+				joinColumns = @JoinColumn(name = "employee_id"), 
+				inverseJoinColumns = @JoinColumn(name = "time_keeping_id"))
+	private Set<TimeKeeping> timeKeeping = new HashSet<>();
 }
