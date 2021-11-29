@@ -67,10 +67,7 @@ public class Employee {
 	@JoinColumn(name = "coefficients_salary_id")
 	private Salary salary;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JsonIgnore
-	@JoinTable(	name = "employee_timekeeping", 
-				joinColumns = @JoinColumn(name = "employee_id"), 
-				inverseJoinColumns = @JoinColumn(name = "time_keeping_id"))
-	private Set<TimeKeeping> timeKeeping = new HashSet<>();
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "timeKeeping_id")
+	private TimeKeeping timeKeeping;
 }

@@ -14,6 +14,7 @@ import com.vandai.mobi.model.Department;
 import com.vandai.mobi.model.Employee;
 import com.vandai.mobi.model.Position;
 import com.vandai.mobi.model.Salary;
+import com.vandai.mobi.model.TimeKeeping;
 import com.vandai.mobi.model.User;
 import com.vandai.mobi.reponsitory.DepartmentRepository;
 import com.vandai.mobi.reponsitory.EmployeeRepository;
@@ -166,6 +167,19 @@ public class EmployeeService implements EmployeeServiceImpl{
 		List<Employee> listEmployee = employeeRepository.findByDepartment(department);
 		return listEmployee;
 	}
+
+//	@Override
+//	public List<Employee> getEmployeeByTimeKeeping(TimeKeeping timeKeeping) {
+//		List<Employee> list = employeeRepository.findByTimeKeeping(timeKeeping);
+//		return list;
+//	}
+//
+//	@Override
+//	public Employee addTimeKeeping(TimeKeeping timeKeeping, long id) {
+//		Employee em = employeeRepository.findById(id).get();
+//		return em;
+//	}
+
 
 
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import com.vandai.mobi.model.StatusDay;
 
 public interface StatusDayServiceImpl {
-	public StatusDay addStatusDay(StatusDay statusDay);
+	public StatusDay addStatusDay();
 	public List<StatusDay> getAllStatusDay();
 	public StatusDay updateStatusDay(StatusDay statusDay, int id);
 	public String deleteStatusDay(int id);

@@ -2,6 +2,7 @@ package com.vandai.mobi.model;
 
 
 import java.sql.Date;
+import java.sql.Time;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -38,11 +39,11 @@ public class StatusDay {
 	@Column
 	private boolean status;
 	@Column
-	private Date inAt;
+	private Time inAt;
 	@Column
 	private int inStatus;
 	@Column
-	private Date outAt;
+	private Time outAt;
 	@Column
 	private int outStatus;
 	@Column

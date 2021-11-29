@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 
 import com.vandai.mobi.dto.EmployeeDto;
 import com.vandai.mobi.model.Employee;
+import com.vandai.mobi.model.TimeKeeping;
 
 public interface EmployeeServiceImpl {
 	public List<Employee> getAllEmployees();
@@ -20,4 +21,7 @@ public interface EmployeeServiceImpl {
 	public List<Employee> getEmployeeByName(String name);
 	public List<Employee> getEmployeeByDepartment(Long idDepartment);
 	
+//	public List<Employee> getEmployeeByTimeKeeping(TimeKeeping timeKeeping);
+//	public Employee addTimeKeeping(TimeKeeping timeKeeping, long id);
+//	
 }

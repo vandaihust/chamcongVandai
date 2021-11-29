@@ -32,7 +32,7 @@ public class TimeKeeping {
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date date;
 	@Column
-	private boolean statusOfDay;
+	private int statusOfDay;
 	@Column
 	private Long hour;
 	@JsonIgnore
