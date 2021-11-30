@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +27,16 @@ public class TimeKeepingController {
 	StatusDayService statusDayService;
 	@PostMapping("/checkin/{id}")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-	public ResponseEntity<?> checkIn(){
-		statusDayService.addStatusDay();	
-		return new ResponseEntity<>("Heello", HttpStatus.OK);
+	public ResponseEntity<?> checkIn(@PathVariable long id){
+		StatusDay statusDay = statusDayService.checkIn(id);	
+		return new ResponseEntity<>(statusDay, HttpStatus.OK);
 	}
+	@PostMapping("/checkout/{id}")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+	public ResponseEntity<?> checkOut(@PathVariable long id){
+		StatusDay statusDay = statusDayService.checkOut(id);	
+		return new ResponseEntity<>(statusDay, HttpStatus.OK);
+	}
+	
 	
 }

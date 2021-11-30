@@ -48,7 +48,7 @@ public class StatusDay {
 	private int outStatus;
 	@Column
 	private int shift;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "timeKeeping_id")
 	private TimeKeeping timeKeeping;
 

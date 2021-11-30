@@ -1,6 +1,8 @@
 package com.vandai.mobi.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -67,7 +70,11 @@ public class Employee {
 	@JoinColumn(name = "coefficients_salary_id")
 	private Salary salary;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "timeKeeping_id")
-	private TimeKeeping timeKeeping;
+	@JsonIgnore
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	private List<TimeKeeping> timeKeeping = new ArrayList<TimeKeeping>(); 
+
+	public void addTimeKeeping(TimeKeeping timeKeeping) {
+		this.timeKeeping.add(timeKeeping);
+	}
 }

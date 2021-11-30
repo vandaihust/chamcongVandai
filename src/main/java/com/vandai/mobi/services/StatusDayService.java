@@ -8,9 +8,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vandai.mobi.model.Employee;
 import com.vandai.mobi.model.Shirt;
 import com.vandai.mobi.model.StatusDay;
 import com.vandai.mobi.model.TimeKeeping;
+import com.vandai.mobi.reponsitory.EmployeeRepository;
 import com.vandai.mobi.reponsitory.ShirtRepository;
 import com.vandai.mobi.reponsitory.StatusDayRepository;
 import com.vandai.mobi.reponsitory.TimeKeepingRepository;
@@ -25,28 +27,19 @@ public class StatusDayService implements StatusDayServiceImpl{
 	TimeKeepingRepository timeKeepingRepository;
 	@Autowired
 	ShirtRepository shirtRepository;
+	@Autowired
+	EmployeeRepository employeeRepository;
+	@Autowired
+	TimeKeepingService timeKeepingService;
 	@Override
-	public StatusDay addStatusDay() {
-		StatusDay statusDay = new StatusDay();
-		Calendar c = Calendar.getInstance();		
-		Date date = new Date(c.getTime().getTime());
-		System.out.println(c.getTime().getHours());
-		Time time = new Time(c.getTime().getHours(), c.getTime().getMinutes(), c.getTime().getSeconds());
-		System.out.println(time);
-		
-		statusDay.setInAt(time);
-		Shirt shirt = shirtRepository.findById(1).get();
-		if(date.getTime() < shirt.getEnd().getTime() && date.getTime() > shirt.getStart().getTime()) {
-			statusDay.setInStatus(0);
-		}
-		statusDay.setStatus(true);
-		TimeKeeping timeKeeping = new TimeKeeping();
-		timeKeeping.setDate(date);
-		timeKeeping.addStatusDay(statusDay);
-		timeKeepingRepository.save(timeKeeping);
-		return statusDay;
+	public StatusDay addStatusDay(long id) {
+		return null;
 	}
-
+//	inAt:0 : muộn
+//	     1: đúng giờ
+//
+//  status: true: đang làm việc
+//	false: vắng
 	@Override
 	public List<StatusDay> getAllStatusDay() {
 		List<StatusDay> statusDays = statusDayRepository.findAll();
@@ -100,6 +93,76 @@ public class StatusDayService implements StatusDayServiceImpl{
 	@Override
 	public StatusDay getByOutAt(Date outAt) {
 		return statusDayRepository.findByOutAt(outAt);
+	}
+	@Override
+	public StatusDay checkIn(long id) {
+		StatusDay statusDay = new StatusDay();
+		Calendar c = Calendar.getInstance();		
+		Date date = new Date(c.getTime().getTime());
+		System.out.println(c.getTime().getHours());
+		Time time = new Time(c.getTime().getHours(), c.getTime().getMinutes(), c.getTime().getSeconds());	
+		statusDay.setInAt(time);
+		Shirt shirt = shirtRepository.findById(1).get();
+		Shirt shirt2 = shirtRepository.findById(2).get();
+		if(date.getTime() < shirt.getEnd().getTime() && date.getTime() > shirt.getStart().getTime()) {
+			statusDay.setInStatus(0);
+			statusDay.setShift(1);
+		} else if(date.getTime() < shirt2.getEnd().getTime() && date.getTime() > shirt2.getStart().getTime()) {
+			statusDay.setInStatus(0);
+			statusDay.setShift(2);
+		}	
+		statusDay.setStatus(true);		
+		List<TimeKeeping> listTimeKeepings = employeeRepository.findById(id).get().getTimeKeeping();	
+		if(listTimeKeepings.size() == 0) {
+			Employee employee = employeeRepository.findById(id).get();
+			TimeKeeping timeKeeping = new TimeKeeping();
+			employee.addTimeKeeping(timeKeeping);
+			statusDay.setTimeKeeping(timeKeeping);
+			timeKeeping.setEmployee(employee);
+			timeKeeping.setDate(date);
+			timeKeepingRepository.save(timeKeeping);
+			statusDayRepository.save(statusDay);
+			employeeRepository.save(employee);
+		} else {
+			Employee employee = employeeRepository.findById(id).get();
+			Date dateOfTimeKeeping = employee.getTimeKeeping().get(employee.getTimeKeeping().size() -1).getDate();
+			
+			if(dateOfTimeKeeping.toString().equalsIgnoreCase(date.toString())) {
+				TimeKeeping timeKeeping = employee.getTimeKeeping().get(employee.getTimeKeeping().size() -1);
+				statusDay.setTimeKeeping(timeKeeping);	
+				statusDayRepository.save(statusDay);
+				employeeRepository.save(employee);
+			} else {
+				TimeKeeping timeKeeping = new TimeKeeping();
+				timeKeeping.setDate(date);
+				statusDay.setTimeKeeping(timeKeeping);
+				timeKeeping.setEmployee(employee);
+				timeKeepingRepository.save(timeKeeping);
+				statusDayRepository.save(statusDay);	
+				employeeRepository.save(employee);		
+			}
+		}
+
+		return statusDay;
+	}
+	@Override
+	public StatusDay checkOut(long id) {
+		Calendar c = Calendar.getInstance();		
+		Date date = new Date(c.getTime().getTime());
+		System.out.println(c.getTime().getHours());
+		Time time = new Time(c.getTime().getHours(), c.getTime().getMinutes(), c.getTime().getSeconds());
+		Employee employee = employeeRepository.findById(id).get();
+		Date dateOfTimeKeeping = employee.getTimeKeeping().get(employee.getTimeKeeping().size() -1).getDate();
+		if(dateOfTimeKeeping.toString().equalsIgnoreCase(date.toString())) {
+			TimeKeeping timeKeeping = employee.getTimeKeeping().get(employee.getTimeKeeping().size() -1);
+			List<StatusDay> listStatusDays = statusDayRepository.findStatusDayByTimeKeeping(timeKeeping);
+			StatusDay statusDay = listStatusDays.get(listStatusDays.size() - 1);
+			statusDay.setOutAt(time);
+			statusDayRepository.save(statusDay);
+			return statusDay;
+		} 
+		
+		return null;
 	}
 
 }
