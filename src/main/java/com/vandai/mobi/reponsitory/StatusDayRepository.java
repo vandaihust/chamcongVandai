@@ -11,9 +11,9 @@ import com.vandai.mobi.model.TimeKeeping;
 @Repository
 public interface StatusDayRepository extends JpaRepository<StatusDay, Integer> {
 	public List<StatusDay> findStatusDayByTimeKeeping(TimeKeeping timeKeeping);
-	public StatusDay findByInStatus(int inStatus);
-	public StatusDay findByOutStatus(int outStatus);
-	public StatusDay findByStatus(int status);
-	public StatusDay findByInAt(Date inAt);
-	public StatusDay findByOutAt(Date outAt);
+	public List<StatusDay> findByInStatus(int inStatus);
+	public List<StatusDay> findByOutStatus(int outStatus);
+	public List<StatusDay> findByStatus(int status);
+	public List<StatusDay> findByInAt(Date inAt);
+	public List<StatusDay> findByOutAt(Date outAt);
 }

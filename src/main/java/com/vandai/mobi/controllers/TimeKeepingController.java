@@ -1,16 +1,19 @@
 package com.vandai.mobi.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.vandai.mobi.model.StatusDay;
+import com.vandai.mobi.model.TimeKeeping;
 import com.vandai.mobi.services.EmployeeService;
 import com.vandai.mobi.services.StatusDayService;
 import com.vandai.mobi.services.TimeKeepingService;
@@ -37,6 +40,14 @@ public class TimeKeepingController {
 		StatusDay statusDay = statusDayService.checkOut(id);	
 		return new ResponseEntity<>(statusDay, HttpStatus.OK);
 	}
+	
+	@GetMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> getAllTimeKeepingByIdEmployee(@PathVariable int id){
+		List<TimeKeeping> timeKeepings = timeKeepingService.getTimeKeepingEmployee(id);	
+		return new ResponseEntity<>(timeKeepings, HttpStatus.OK);
+	}
+	
 	
 	
 }

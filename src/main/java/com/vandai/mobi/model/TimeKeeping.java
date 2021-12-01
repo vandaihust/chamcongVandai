@@ -1,7 +1,9 @@
 package com.vandai.mobi.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -39,11 +41,12 @@ public class TimeKeeping {
 	private Long hour;
 	@JsonIgnore
 	@OneToMany(mappedBy = "timeKeeping", cascade = CascadeType.ALL)
-	private Set<StatusDay> statusDays = new HashSet<StatusDay>();	
+	private List<StatusDay> statusDays = new ArrayList<StatusDay>();	
 	public void addStatusDay(StatusDay statusDay) {
 		this.statusDays.add(statusDay);
 	}
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "employee_id")
 	private Employee employee;
 		

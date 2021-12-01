@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,10 @@ public class StatusDayService implements StatusDayServiceImpl{
 	@Autowired
 	TimeKeepingService timeKeepingService;
 	@Override
-	public StatusDay addStatusDay(long id) {
-		return null;
+	public StatusDay addStatusDay(StatusDay statusDay,int idTimeKeeping) {
+		statusDay.setTimeKeeping(timeKeepingRepository.findById(idTimeKeeping).get());
+		statusDayRepository.save(statusDay);
+		return statusDay;
 	}
 //	inAt:0 : muộn
 //	     1: đúng giờ
@@ -56,7 +59,7 @@ public class StatusDayService implements StatusDayServiceImpl{
 	@Override
 	public String deleteStatusDay(int id) {
 		statusDayRepository.deleteById(id);;
-		return "Delete Success";
+		return "Delete Successfully";
 	}
 
 	@Override
@@ -71,29 +74,34 @@ public class StatusDayService implements StatusDayServiceImpl{
 	}
 
 	@Override
-	public StatusDay getByInStatus(int inStatus) {
+	public List<StatusDay> getByInStatus(int inStatus) {
 		return statusDayRepository.findByInStatus(inStatus);
 	}
 
 	@Override
-	public StatusDay getByOutStatus(int outStatus) {
+	public List<StatusDay> getByOutStatus(int outStatus) {
 		return statusDayRepository.findByOutStatus(outStatus);
 	}
 
 	@Override
-	public StatusDay getByStatus(int status) {
+	public List<StatusDay> getByStatus(int status) {
 		return statusDayRepository.findByStatus(status);
 	}
 
 	@Override
-	public StatusDay getByInAt(Date inAt) {
+	public List<StatusDay> getByInAt(Date inAt) {
 		return statusDayRepository.findByInAt(inAt);
 	}
 
 	@Override
-	public StatusDay getByOutAt(Date outAt) {
+	public List<StatusDay> getByOutAt(Date outAt) {
 		return statusDayRepository.findByOutAt(outAt);
 	}
+//	inAt:0 : muộn
+//    1: đúng giờ
+//
+//status: true: đang làm việc
+//false: vắng
 	@Override
 	public StatusDay checkIn(long id) {
 		StatusDay statusDay = new StatusDay();
@@ -110,7 +118,13 @@ public class StatusDayService implements StatusDayServiceImpl{
 		} else if(date.getTime() < shirt2.getEnd().getTime() && date.getTime() > shirt2.getStart().getTime()) {
 			statusDay.setInStatus(0);
 			statusDay.setShift(2);
-		}	
+		} else if(date.getTime() < shirt.getStart().getTime()) {
+			statusDay.setInStatus(1);
+			statusDay.setShift(1);
+		} else if(date.getTime() < shirt2.getStart().getTime() && date.getTime() > shirt.getStart().getTime()) {
+			statusDay.setInStatus(1);
+			statusDay.setShift(1);
+		}
 		statusDay.setStatus(true);		
 		List<TimeKeeping> listTimeKeepings = employeeRepository.findById(id).get().getTimeKeeping();	
 		if(listTimeKeepings.size() == 0) {
@@ -164,5 +178,11 @@ public class StatusDayService implements StatusDayServiceImpl{
 		
 		return null;
 	}
+	@Override
+	public List<StatusDay> getStatusDayByTimeKeeping(int idTimeKeeping) {
+		List<StatusDay> statusDays = timeKeepingRepository.findById(idTimeKeeping).get().getStatusDays();
+		return statusDays;
+	}
+
 
 }

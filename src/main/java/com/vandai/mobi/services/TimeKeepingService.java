@@ -6,13 +6,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vandai.mobi.model.Employee;
 import com.vandai.mobi.model.TimeKeeping;
+import com.vandai.mobi.reponsitory.EmployeeRepository;
 import com.vandai.mobi.reponsitory.TimeKeepingRepository;
 import com.vandai.mobi.services.impl.TimeKeepingServiceImpl;
 @Service
 public class TimeKeepingService implements TimeKeepingServiceImpl{
 	@Autowired
 	TimeKeepingRepository timeKeepingRepository;
+	@Autowired
+	EmployeeRepository employeeRepository;
 	@Override
 	public TimeKeeping addTimeKeeping(TimeKeeping timeKeeping) {
 		timeKeepingRepository.save(timeKeeping);
@@ -66,6 +70,13 @@ public class TimeKeepingService implements TimeKeepingServiceImpl{
 	public List<TimeKeeping> fakeDataTimeKeeping() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<TimeKeeping> getTimeKeepingEmployee(long id) {
+		Employee e = employeeRepository.findById(id).get();
+		List<TimeKeeping> timeKeepings = timeKeepingRepository.findByEmployee(e);
+		return timeKeepings;
 	}
 
 }

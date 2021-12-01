@@ -3,6 +3,7 @@ package com.vandai.mobi.services.impl;
 import java.sql.Date;
 import java.util.List;
 
+import com.vandai.mobi.model.Employee;
 import com.vandai.mobi.model.TimeKeeping;
 
 public interface TimeKeepingServiceImpl {
@@ -14,5 +15,6 @@ public interface TimeKeepingServiceImpl {
 	public List<TimeKeeping> getTimeKeepingStatusOfDay(int statusOfDay);
 	public List<TimeKeeping> getTimeKeepingByHour(long hour);
 	public List<TimeKeeping> getTimeKeepingDate(Date date);
+	public List<TimeKeeping> getTimeKeepingEmployee(long id);
 	public List<TimeKeeping> fakeDataTimeKeeping();
 }

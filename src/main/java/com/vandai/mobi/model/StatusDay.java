@@ -49,6 +49,7 @@ public class StatusDay {
 	@Column
 	private int shift;
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "timeKeeping_id")
 	private TimeKeeping timeKeeping;
 
