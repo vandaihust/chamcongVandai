@@ -7,7 +7,7 @@ import com.vandai.mobi.model.Employee;
 import com.vandai.mobi.model.TimeKeeping;
 
 public interface TimeKeepingServiceImpl {
-	public TimeKeeping addTimeKeeping(TimeKeeping timeKeeping);
+	public TimeKeeping addTimeKeeping(TimeKeeping timeKeeping, long idEmployee);
 	public List<TimeKeeping> getAllTimeKeeping();
 	public TimeKeeping updateTimeKeeping(TimeKeeping timeKeeping, int id);
 	public String deleteTimeKeeping(int id);

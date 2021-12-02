@@ -18,9 +18,11 @@ public class TimeKeepingService implements TimeKeepingServiceImpl{
 	@Autowired
 	EmployeeRepository employeeRepository;
 	@Override
-	public TimeKeeping addTimeKeeping(TimeKeeping timeKeeping) {
+	public TimeKeeping addTimeKeeping(TimeKeeping timeKeeping, long idEmployee) {		
+		Employee e = employeeRepository.findById(idEmployee).get();
+		timeKeeping.setEmployee(e);
 		timeKeepingRepository.save(timeKeeping);
-		return null;
+		return timeKeeping;
 	}
 
 	@Override

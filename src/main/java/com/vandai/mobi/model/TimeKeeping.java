@@ -1,6 +1,7 @@
 package com.vandai.mobi.model;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -38,7 +39,7 @@ public class TimeKeeping {
 	@Column
 	private int statusOfDay;
 	@Column
-	private Long hour;
+	private long hour;
 	@JsonIgnore
 	@OneToMany(mappedBy = "timeKeeping", cascade = CascadeType.ALL)
 	private List<StatusDay> statusDays = new ArrayList<StatusDay>();	

@@ -89,12 +89,12 @@ public class StatusDayService implements StatusDayServiceImpl{
 	}
 
 	@Override
-	public List<StatusDay> getByInAt(Date inAt) {
+	public List<StatusDay> getByInAt(Time inAt) {
 		return statusDayRepository.findByInAt(inAt);
 	}
 
 	@Override
-	public List<StatusDay> getByOutAt(Date outAt) {
+	public List<StatusDay> getByOutAt(Time outAt) {
 		return statusDayRepository.findByOutAt(outAt);
 	}
 //	inAt:0 : muộn
@@ -181,6 +181,11 @@ public class StatusDayService implements StatusDayServiceImpl{
 	@Override
 	public List<StatusDay> getStatusDayByTimeKeeping(int idTimeKeeping) {
 		List<StatusDay> statusDays = timeKeepingRepository.findById(idTimeKeeping).get().getStatusDays();
+		return statusDays;
+	}
+	@Override
+	public List<StatusDay> getByShift(int shift) {
+		List<StatusDay> statusDays = statusDayRepository.findByShift(shift);
 		return statusDays;
 	}
 

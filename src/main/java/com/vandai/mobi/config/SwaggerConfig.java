@@ -1,4 +1,4 @@
-package com.vandai.mobi.swagger.config;
+package com.vandai.mobi.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

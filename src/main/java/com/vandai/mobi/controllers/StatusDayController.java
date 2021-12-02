@@ -1,6 +1,7 @@
 package com.vandai.mobi.controllers;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,16 +70,11 @@ public class StatusDayController {
 		List<StatusDay> statusDays = statusDayService.getByOutStatus(outstatus);	
 		return new ResponseEntity<>(statusDays, HttpStatus.OK);
 	}
-//	@GetMapping("search/intat/{intat}")
-//	@PreAuthorize("hasRole('ADMIN')")
-//	public ResponseEntity<?> getStatusDayByInAt(@PathVariable Date intat){
-//		List<StatusDay> statusDays = statusDayService.getByInAt(intat);	
-//		return new ResponseEntity<>(statusDays, HttpStatus.OK);
-//	}
-//	@GetMapping("search/outat/{outat}")
-//	@PreAuthorize("hasRole('ADMIN')")
-//	public ResponseEntity<?> getStatusDayByOutAt(@PathVariable Date outat){
-//		List<StatusDay> statusDays = statusDayService.getByOutAt(outat);	
-//		return new ResponseEntity<>(statusDays, HttpStatus.OK);
-//	}
+	@GetMapping("search/shirt/{shift}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> getStatusDayByShirt(@PathVariable int shift){
+		List<StatusDay> statusDays = statusDayService.getByShift(shift);	
+		return new ResponseEntity<>(statusDays, HttpStatus.OK);
+	}
+
 }

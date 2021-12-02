@@ -1,6 +1,7 @@
 package com.vandai.mobi.services.impl;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 import com.vandai.mobi.model.StatusDay;
@@ -16,10 +17,12 @@ public interface StatusDayServiceImpl {
 	public List<StatusDay> getByInStatus(int inStatus);
 	public List<StatusDay> getByOutStatus(int outStatus);
 	public List<StatusDay> getByStatus(int status);
-	public List<StatusDay> getByInAt(Date inAt);
-	public List<StatusDay> getByOutAt(Date outAt);
+	public List<StatusDay> getByInAt(Time inAt);
+	public List<StatusDay> getByOutAt(Time outAt);
+	public List<StatusDay> getByShift(int shirt);
 	
 	public List<StatusDay> getStatusDayByTimeKeeping(int idTimeKeeping);
 	public StatusDay checkIn(long id);
 	public StatusDay checkOut(long id);
+	
 }
