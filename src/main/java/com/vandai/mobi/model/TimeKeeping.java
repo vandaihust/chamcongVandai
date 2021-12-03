@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,7 +42,7 @@ public class TimeKeeping {
 	@Column
 	private long hour;
 	@JsonIgnore
-	@OneToMany(mappedBy = "timeKeeping", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "timeKeeping", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	private List<StatusDay> statusDays = new ArrayList<StatusDay>();	
 	public void addStatusDay(StatusDay statusDay) {
 		this.statusDays.add(statusDay);

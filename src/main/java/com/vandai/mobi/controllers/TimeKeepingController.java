@@ -79,21 +79,24 @@ public class TimeKeepingController {
 	@GetMapping("/caculate")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> caculateHour(){
-		
-
-		List<StatusDay> statusDays = statusDayService.getStatusDayByTimeKeeping(1);
-		long time = 0;
-		for (StatusDay statusDay : statusDays) {
-			long c = statusDay.getOutAt().getTime() - statusDay.getInAt().getTime();
-//			System.out.println(statusDay.getOutAt());
-//			System.out.println(statusDay.getInAt().getTime());
-			time += c;
+		List<TimeKeeping> listTimeKeepings = timeKeepingService.getAllTimeKeeping();
+		for (TimeKeeping timeKeeping : listTimeKeepings) {
+			List<StatusDay> statusDays = statusDayService.getStatusDayByTimeKeeping(timeKeeping.getId());
+			long time = 0;
+			for (StatusDay statusDay : statusDays) {
+				long c = statusDay.getOutAt().getTime() - statusDay.getInAt().getTime();
+				time += c;
+			}
+			time = time /1000;
+			timeKeeping.setHour(time);//đơn vị giây
+			
+			if(time>0) timeKeeping.setStatusOfDay(1);//đi làm
+			else if (time == 0) timeKeeping.setStatusOfDay(0);//vắng
+			
+			timeKeepingService.updateTimeKeeping(timeKeeping, timeKeeping.getId());
 		}
-		TimeKeeping timeKeeping = timeKeepingService.getTimeKeepingById(1);
 		
-		timeKeeping.setHour(time/1000);//đơn vị giây
-		timeKeepingService.updateTimeKeeping(timeKeeping, 1);
-		return new ResponseEntity<>(time, HttpStatus.OK);
+		return new ResponseEntity<>(listTimeKeepings, HttpStatus.OK);
 	}
 	
 }
