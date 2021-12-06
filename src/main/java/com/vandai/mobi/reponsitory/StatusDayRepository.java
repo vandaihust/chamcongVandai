@@ -1,13 +1,11 @@
 package com.vandai.mobi.reponsitory;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.vandai.mobi.model.Shirt;
 import com.vandai.mobi.model.StatusDay;
 import com.vandai.mobi.model.TimeKeeping;
 @Repository

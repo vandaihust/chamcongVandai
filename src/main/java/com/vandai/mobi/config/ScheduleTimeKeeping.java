@@ -3,8 +3,6 @@ package com.vandai.mobi.config;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +18,7 @@ public class ScheduleTimeKeeping {
 	@Autowired
 	StatusDayService statusDayService;
 	
-	@Scheduled(fixedRate = 10000)
+	@Scheduled(fixedRate = 1000000)
 	public void caculateHourOfWork(){
 		List<TimeKeeping> listTimeKeepings = timeKeepingService.getAllTimeKeeping();
 		for (TimeKeeping timeKeeping : listTimeKeepings) {

@@ -77,4 +77,18 @@ public class Employee {
 	public void addTimeKeeping(TimeKeeping timeKeeping) {
 		this.timeKeeping.add(timeKeeping);
 	}
+	@JsonIgnore
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	private List<AddSubSalary> addsubSalary = new ArrayList<AddSubSalary>(); 
+
+	public void addAddSubSalary(AddSubSalary addSubSalary) {
+		this.addsubSalary.add(addSubSalary);
+	}
+	@JsonIgnore
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	private List<WorkHistory> workHistory = new ArrayList<WorkHistory>();
+
+	public void addWorkHistory(WorkHistory workHistory2) {
+		this.workHistory.add(workHistory2);
+	}
 }
