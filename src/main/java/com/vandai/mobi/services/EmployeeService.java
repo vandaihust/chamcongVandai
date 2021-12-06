@@ -16,11 +16,13 @@ import com.vandai.mobi.model.Position;
 import com.vandai.mobi.model.Salary;
 import com.vandai.mobi.model.TimeKeeping;
 import com.vandai.mobi.model.User;
+import com.vandai.mobi.model.WorkHistory;
 import com.vandai.mobi.reponsitory.DepartmentRepository;
 import com.vandai.mobi.reponsitory.EmployeeRepository;
 import com.vandai.mobi.reponsitory.PositionRepository;
 import com.vandai.mobi.reponsitory.SalaryRepository;
 import com.vandai.mobi.reponsitory.UserRepository;
+import com.vandai.mobi.reponsitory.WorkHistoryRepository;
 import com.vandai.mobi.services.impl.EmployeeServiceImpl;
 @Service
 public class EmployeeService implements EmployeeServiceImpl{
@@ -34,6 +36,8 @@ public class EmployeeService implements EmployeeServiceImpl{
 	PositionRepository positionRepository;
 	@Autowired
 	SalaryRepository salaryRepository;
+	@Autowired
+	WorkHistoryRepository workHistoryRepository;
 	@Override
 	public List<Employee> getAllEmployees() {
 		List<Employee> listEmployee = employeeRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
@@ -86,6 +90,13 @@ public class EmployeeService implements EmployeeServiceImpl{
 		positionRepository.save(position);
 		department.addEmployee(employee);
 		departmentRepository.save(department);	//CascadeType.ALL nên ko cần save E
+		//work History create
+		WorkHistory workHistory = new WorkHistory();
+		workHistory.setEmployee(employee);
+		workHistory.setPosition(position);
+		workHistory.setEndAt(null);
+		workHistoryRepository.save(workHistory);
+		//
 		return employee;
 	
 	}
@@ -122,6 +133,7 @@ public class EmployeeService implements EmployeeServiceImpl{
 	@Override
 	public String updateEmployee(EmployeeDto employeeDto, long id) {
 		Employee employee = new Employee();
+		int idOldPosition = employeeRepository.findById(id).get().getPosition().getId();
 		User user = userRepository.findById(employeeDto.getIdUser()).get();
 		Department department = departmentRepository.findById(employeeDto.getIdDepartment()).get();
 		Position position = positionRepository.findById(employeeDto.getIdPosition()).get();
@@ -143,8 +155,27 @@ public class EmployeeService implements EmployeeServiceImpl{
 		employee.setPosition(position);
 		employee.setSalary(salary);
 		employeeRepository.save(employee);
-
+		
 		if(employeeRepository.save(employee) != null) {
+			//update endAt WorkHistory
+			List<WorkHistory> histories = workHistoryRepository.findByEmployee(employee);
+			WorkHistory workHistory = histories.get(histories.size() - 1);
+			System.out.println(histories.get(histories.size() - 1).getStartAt());
+			System.out.println(employeeDto.getIdPosition()!= idOldPosition);
+			if(employeeDto.getIdPosition()!= idOldPosition) {
+				if(workHistory.getReason() == null ) {
+					workHistory.setEmployee(employee);
+					workHistory.setPosition(position);
+					workHistory.setReason(employeeDto.getReason());
+					workHistoryRepository.save(workHistory);
+				} else {
+					WorkHistory workHistory2 = new WorkHistory();
+					workHistory2.setEmployee(employee);
+					workHistory2.setPosition(position);
+					workHistoryRepository.save(workHistory2);
+				}
+			}
+			//
 			return "Update Success";
 		}
 		return "Update fail";

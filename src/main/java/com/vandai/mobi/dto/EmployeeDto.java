@@ -18,4 +18,5 @@ public class EmployeeDto {
 	private Long idDepartment;
 	private int idPosition;
 	private int coefficientsSalary;
+	private String reason;
 }

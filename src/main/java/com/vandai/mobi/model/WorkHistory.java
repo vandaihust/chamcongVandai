@@ -40,7 +40,8 @@ public class WorkHistory {
 	private Date endAt;
 	@Column
 	private String reason;
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "position_id")
 	private Position position;
 	@ManyToOne

@@ -1,5 +1,6 @@
 package com.vandai.mobi.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -35,5 +36,11 @@ public class Position {
 	public void addEmployee(Employee employee) {
 		this.employees.add(employee);
 	}
-	
+	@JsonIgnore
+	@OneToMany(mappedBy = "position", cascade = CascadeType.ALL)
+	private List<WorkHistory> workHistory = new ArrayList<WorkHistory>();
+
+	public void addWorkHistory(WorkHistory workHistory2) {
+		this.workHistory.add(workHistory2);
+	}
 }
