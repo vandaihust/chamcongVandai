@@ -70,4 +70,9 @@ public class WorkHistoryService implements WorkHistoryServiceImpl{
 		return histories;
 	}
 
+	@Override
+	public WorkHistory getById(long id) {
+		return workHistoryRepository.findById(id).get();
+	}
+
 }

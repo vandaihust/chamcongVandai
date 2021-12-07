@@ -21,6 +21,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.vandai.mobi.model.address.DetailAddress;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -91,4 +92,7 @@ public class Employee {
 	public void addWorkHistory(WorkHistory workHistory2) {
 		this.workHistory.add(workHistory2);
 	}
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "detailaddress_id")
+	private DetailAddress detailaddress;
 }
