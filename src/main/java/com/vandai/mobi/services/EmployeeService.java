@@ -1,5 +1,6 @@
 package com.vandai.mobi.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,17 @@ import com.vandai.mobi.model.Salary;
 import com.vandai.mobi.model.TimeKeeping;
 import com.vandai.mobi.model.User;
 import com.vandai.mobi.model.WorkHistory;
+import com.vandai.mobi.model.address.DetailAddress;
+import com.vandai.mobi.model.address.District;
 import com.vandai.mobi.reponsitory.DepartmentRepository;
+import com.vandai.mobi.reponsitory.DetailAddressRepository;
+import com.vandai.mobi.reponsitory.DistrictRepository;
 import com.vandai.mobi.reponsitory.EmployeeRepository;
 import com.vandai.mobi.reponsitory.PositionRepository;
+import com.vandai.mobi.reponsitory.ProvinceRepository;
 import com.vandai.mobi.reponsitory.SalaryRepository;
 import com.vandai.mobi.reponsitory.UserRepository;
+import com.vandai.mobi.reponsitory.WardRepository;
 import com.vandai.mobi.reponsitory.WorkHistoryRepository;
 import com.vandai.mobi.services.impl.EmployeeServiceImpl;
 @Service
@@ -38,6 +45,14 @@ public class EmployeeService implements EmployeeServiceImpl{
 	SalaryRepository salaryRepository;
 	@Autowired
 	WorkHistoryRepository workHistoryRepository;
+	@Autowired
+	DetailAddressRepository detailAddressRepository; 
+	@Autowired
+	ProvinceRepository provinceRepository;
+	@Autowired
+	DistrictRepository districtRepository;
+	@Autowired
+	WardRepository wardRepository;
 	@Override
 	public List<Employee> getAllEmployees() {
 		List<Employee> listEmployee = employeeRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
@@ -83,7 +98,14 @@ public class EmployeeService implements EmployeeServiceImpl{
 		employee.setDepartment(department);		
 		employee.setPosition(position);
 		employee.setSalary(salary);
-		
+		//detail address
+		DetailAddress detailAddress = new DetailAddress();
+		detailAddress.setName(employeeDto.getNameAddress());
+		detailAddress.setProvince(provinceRepository.findById(employeeDto.getIdProvince()).get());
+		detailAddress.setDistrict(districtRepository.findById(employeeDto.getIdDistrict()).get());
+		detailAddress.setWard(wardRepository.findById(employeeDto.getIdWard()).get());
+		employee.setDetailaddress(detailAddress);
+		//
 		salary.addEmployee(employee);
 		salaryRepository.save(salary);
 		position.addEmployee(employee);
@@ -154,6 +176,15 @@ public class EmployeeService implements EmployeeServiceImpl{
 		employee.setDepartment(department);		
 		employee.setPosition(position);
 		employee.setSalary(salary);
+		//update detail address
+		DetailAddress detailAddress = new DetailAddress();
+		detailAddress.setName(employeeDto.getNameAddress());
+		detailAddress.setProvince(provinceRepository.findById(employeeDto.getIdProvince()).get());
+		detailAddress.setDistrict(districtRepository.findById(employeeDto.getIdDistrict()).get());
+		detailAddress.setWard(wardRepository.findById(employeeDto.getIdWard()).get());
+		employee.setDetailaddress(detailAddress);
+		//
+		
 		employeeRepository.save(employee);
 		
 		if(employeeRepository.save(employee) != null) {
@@ -198,6 +229,44 @@ public class EmployeeService implements EmployeeServiceImpl{
 		List<Employee> listEmployee = employeeRepository.findByDepartment(department);
 		return listEmployee;
 	}
+//search address
+	
+	
+	@Override
+	public List<Employee> searchEmployeeByAddress(int idProvince) {
+		List<DetailAddress> addresses = provinceRepository.findById(idProvince).get().getDetailaddress();
+		List<Employee> employees = new ArrayList<Employee>();
+		for (DetailAddress detailAddress : addresses) {
+			employees.addAll(employeeRepository.findBydetailaddress(detailAddress));
+		}
+		return employees;
+	}
+
+	@Override
+	public List<Employee> searchEmployeeByAddress(int idProvince, int idDistrict) {
+		List<DetailAddress> addresses = districtRepository.findById(idDistrict).get().getDetailaddress();
+		List<Employee> employees = new ArrayList<Employee>();
+		for (DetailAddress detailAddress : addresses) {
+			employees.addAll(employeeRepository.findBydetailaddress(detailAddress));
+		}
+		return employees;
+	}
+
+	@Override
+	public List<Employee> searchEmployeeByAddress(int idProvince, int idDistrict, int idWard) {
+		List<DetailAddress> addresses = wardRepository.findById(idWard).get().getDetailaddress();
+		List<Employee> employees = new ArrayList<Employee>();
+		for (DetailAddress detailAddress : addresses) {
+			employees.addAll(employeeRepository.findBydetailaddress(detailAddress));
+		}
+		return employees;
+	}
+
+	@Override
+	public List<Employee> searchEmployeeByAddress(int idProvince, int idDistrict, int idWard, String nameAddress) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 //	@Override
 //	public List<Employee> getEmployeeByTimeKeeping(TimeKeeping timeKeeping) {
@@ -210,7 +279,8 @@ public class EmployeeService implements EmployeeServiceImpl{
 //		Employee em = employeeRepository.findById(id).get();
 //		return em;
 //	}
-
+	
+	
 
 
 }

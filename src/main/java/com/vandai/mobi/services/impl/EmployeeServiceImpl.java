@@ -23,5 +23,8 @@ public interface EmployeeServiceImpl {
 	
 //	public List<Employee> getEmployeeByTimeKeeping(TimeKeeping timeKeeping);
 //	public Employee addTimeKeeping(TimeKeeping timeKeeping, long id);
-//	
+	public List<Employee> searchEmployeeByAddress(int idProvince);
+	public List<Employee> searchEmployeeByAddress(int idProvince, int idDistrict);
+	public List<Employee> searchEmployeeByAddress(int idProvince, int idDistrict, int idWard);
+	public List<Employee> searchEmployeeByAddress(int idProvince, int idDistrict, int idWard, String nameAddress);
 }

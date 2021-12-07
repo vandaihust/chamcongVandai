@@ -57,6 +57,24 @@ public class EmployeeController {
 		List<Employee> listEmployees = employeeService.getEmployeeByName(name);
 		return new ResponseEntity<List<Employee>>(listEmployees, HttpStatus.OK);
 	}
+	@GetMapping("search/province/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> searchEmployeeByProvince(@PathVariable int id){
+		List<Employee> listEmployees = employeeService.searchEmployeeByAddress(id);
+		return new ResponseEntity<List<Employee>>(listEmployees, HttpStatus.OK);
+	}
+	@GetMapping("search/province/{idProvince}/district/{idDistrict}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> searchEmployeeByProvinceDistrict(@PathVariable int idProvince, @PathVariable int idDistrict){
+		List<Employee> listEmployees = employeeService.searchEmployeeByAddress(idProvince, idDistrict);
+		return new ResponseEntity<List<Employee>>(listEmployees, HttpStatus.OK);
+	}
+	@GetMapping("search/province/{idProvince}/district/{idDistrict}/ward/{idWard}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> searchEmployeeByProvinceDistrict(@PathVariable int idProvince, @PathVariable int idDistrict, @PathVariable int idWard){
+		List<Employee> listEmployees = employeeService.searchEmployeeByAddress(idProvince, idDistrict,idWard);
+		return new ResponseEntity<List<Employee>>(listEmployees, HttpStatus.OK);
+	}
 	@GetMapping("{pageNo}/{pageSize}/{sortField}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> findPaginated(@PathVariable int pageNo,@PathVariable int pageSize,

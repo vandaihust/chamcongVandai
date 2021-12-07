@@ -19,4 +19,9 @@ public class EmployeeDto {
 	private int idPosition;
 	private int coefficientsSalary;
 	private String reason;
+	//address Detail
+	private int idProvince;
+	private int idDistrict;
+	private int idWard;
+	private String nameAddress;
 }
