@@ -10,6 +10,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vandai.mobi.model.Employee;
+import com.vandai.mobi.model.Insurance;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -38,4 +39,8 @@ public class DetailAddress {
 	@OneToOne(mappedBy = "detailaddress")
 	@JsonIgnore
 	private Employee employee;
+	
+//	@OneToOne(mappedBy = "detailaddress")
+//	@JsonIgnore
+//	private Insurance insurance;
 }

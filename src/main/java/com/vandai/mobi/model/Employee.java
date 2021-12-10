@@ -95,4 +95,8 @@ public class Employee {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "detailaddress_id")
 	private DetailAddress detailaddress;
+	
+	@OneToOne(mappedBy = "employee")
+	@JsonIgnore
+	private Insurance insurance;
 }
