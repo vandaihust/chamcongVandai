@@ -99,4 +99,11 @@ public class Employee {
 	@OneToOne(mappedBy = "employee")
 	@JsonIgnore
 	private Insurance insurance;
+	
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	private List<Allowance> allowance = new ArrayList<Allowance>();
+
+	public void addAllowance(Allowance allowanceElement) {
+		this.allowance.add(allowanceElement);
+	}
 }
