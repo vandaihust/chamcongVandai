@@ -106,4 +106,7 @@ public class Employee {
 	public void addAllowance(Allowance allowanceElement) {
 		this.allowance.add(allowanceElement);
 	}
+	@OneToOne(mappedBy = "employee")
+	@JsonIgnore
+	private Rfid rfid;
 }
